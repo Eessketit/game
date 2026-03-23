@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TicTacToe</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container d-flex flex-column min-vh-100 justify-content-center">
+        <main role="main" class="flex-grow-1 d-flex flex-column justify-content-center py-5">
+            @RenderBody()
+        </main>
+        
+        <footer class="footer text-muted text-center py-3" style="border-top: 1px solid rgba(255,255,255,0.1);">
+            <div class="container text-white-50">
+                &copy; 2026 - TicTacToe Multiplayer - <a href="#" class="text-info text-decoration-none">Rules</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,76 @@
+@model TicTacToeApp.Models.GameSession
+@{
+    ViewData["Title"] = "Game Room";
+    var playerId = ViewBag.PlayerId;
+}
+
+<div class="game-container text-light text-center py-4">
+    <div class="glass-panel p-4 mx-auto card" style="max-width: 600px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-gradient fw-bold mb-0" style="background: -webkit-linear-gradient(45deg, #FF6B6B, #4ECDC4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VS Mode</h2>
+            <a asp-controller="Lobby" asp-action="Index" class="btn btn-sm btn-outline-light rounded-pill px-3">Leave</a>
+        </div>
+
+        <div class="game-info mb-4 p-3 rounded-3" style="background: rgba(0,0,0,0.3);">
+            <div id="gameStatus" class="fs-4 fw-bold mb-2">
+                @if (Model.Status == "Waiting")
+                {
+                    <span class="text-warning timer-pulse" id="statusMessage">Waiting for opponent...</span>
+                }
+                else if (Model.Status == "Finished")
+                {
+                    <span class="text-info" id="statusMessage">Game Over!</span>
+                }
+                else
+                {
+                    <span class="text-success" id="statusMessage">Game in Progress</span>
+                }
+            </div>
+            
+            <div class="d-flex justify-content-between px-3 mt-3">
+                <div class="text-start">
+                    <span class="d-block text-white-50 small text-uppercase" style="letter-spacing: 1px;">Player 1 (X)</span>
+                    <strong class="fs-5 text-white player1-name" id="p1Name">@((Model.Player1 != null) ? Model.Player1.Name : "Waiting...")</strong>
+                </div>
+                <div class="text-end">
+                    <span class="d-block text-white-50 small text-uppercase" style="letter-spacing: 1px;">Player 2 (O)</span>
+                    <strong class="fs-5 text-white player2-name" id="p2Name">@((Model.Player2 != null) ? Model.Player2.Name : "Waiting...")</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="tic-tac-toe-board mx-auto @(Model.Status == "Finished" ? "game-finished" : "")" id="board" data-game-id="@Model.Id" data-player-id="@playerId">
+            @for (int i = 0; i < 9; i++)
+            {
+                var cellValue = Model.BoardState[i] == '-' ? "" : Model.BoardState[i].ToString();
+                var cssClass = cellValue == "X" ? "cell-x" : (cellValue == "O" ? "cell-o" : "");
+                <div class="ttt-cell @cssClass" data-index="@i">
+                    @cellValue
+                </div>
+            }
+        </div>
+        
+        <div id="turnIndicator" class="mt-4 fs-5 text-white-50">
+            @if (Model.Status == "InProgress")
+            {
+                if (Model.CurrentTurnPlayerId == playerId)
+                {
+                    <span class="text-success fw-bold pulse-text">Your Turn!</span>
+                }
+                else
+                {
+                    <span>Opponent's Turn</span>
+                }
+            }
+        </div>
+        
+        <a asp-action="Index" asp-controller="Lobby" class="btn mt-4 px-5 rounded-pill fw-bold" id="backToLobbyBtn" style="display: @(Model.Status == "Finished" ? "inline-block" : "none"); background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border:none; color: white;">Back to Lobby</a>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script src="~/js/game.js" asp-append-version="true"></script>
+}

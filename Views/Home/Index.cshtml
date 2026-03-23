@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Enter Game";
+}
+
+<div class="login-container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="glass-panel text-center p-5 card" style="max-width: 450px; width: 100%; border-radius: 20px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);">
+        <h1 class="display-4 text-gradient mb-4 fw-bold" style="background: -webkit-linear-gradient(45deg, #FF6B6B, #4ECDC4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">XO Match</h1>
+        <p class="lead mb-4 text-light">Enter your name to start playing against live opponents.</p>
+        
+        <form method="post" asp-action="Index">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" style="background-color: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; color: #ffcccc;">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger mb-0" })
+                </div>
+            }
+            <div class="mb-4">
+                <input type="text" name="playerName" class="form-control form-control-lg text-center text-white" 
+                       style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 1.25rem;" 
+                       placeholder="Your Name" required autocomplete="off" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold" style="background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4); text-transform: uppercase; letter-spacing: 1px;">Enter Arena</button>
+        </form>
+    </div>
+</div>

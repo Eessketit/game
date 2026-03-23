@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Game Lobby";
+}
+
+<div class="lobby-container text-light py-4" style="min-height: 80vh;">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="text-gradient fw-bold mb-0" style="background: -webkit-linear-gradient(45deg, #FF6B6B, #4ECDC4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Welcome, @ViewBag.PlayerName!</h2>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light rounded-pill px-4">Change Name</a>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-8">
+            <div class="glass-panel p-4 h-100 card" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;">
+                <h3 class="mb-4 text-white">Active Games</h3>
+                <div class="game-list" id="gameList">
+                    @if (ViewBag.ActiveGames != null && Enumerable.Count(ViewBag.ActiveGames) > 0)
+                    {
+                        <div class="row g-3">
+                        @foreach (var game in ViewBag.ActiveGames)
+                        {
+                            <div class="col-md-6">
+                                <div class="p-3 rounded-3 d-flex justify-content-between align-items-center" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);">
+                                    <span class="text-white-50"><strong class="text-white">@game.CreatorName</strong>'s Game</span>
+                                    <form method="post" asp-action="JoinGame" style="margin: 0;">
+                                        <input type="hidden" name="id" value="@game.Id" />
+                                        <button type="submit" class="btn btn-sm btn-info rounded-pill px-3 fw-bold" style="background: linear-gradient(45deg, #4ECDC4, #556270); border: none; color: white;">Join</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5 text-white-50">
+                            <i class="fs-1 mb-3">🎮</i>
+                            <p>No active games waiting right now.<br>Create one to start playing!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="glass-panel p-4 mb-4 text-center card" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;">
+                <h3 class="mb-3 text-white">Play Now</h3>
+                <p class="text-white-50 mb-4">Create a new game session and wait for an opponent.</p>
+                <form method="post" asp-action="CreateGame">
+                    <button type="submit" class="btn btn-success btn-lg w-100 mb-3 fw-bold rounded-pill" style="background: linear-gradient(45deg, #FF6B6B, #FF8E53); border: none; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);">Create Game</button>
+                </form>
+                <button class="btn btn-outline-info w-100 rounded-pill" disabled style="opacity:0.5;">Play Computer (Coming Soon)</button>
+            </div>
+            
+            <div class="glass-panel p-3 text-center card" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;">
+                <h4 class="mb-3 text-white">Your Stats</h4>
+                <div class="d-flex justify-content-around">
+                    <div>
+                        <h3 class="text-success mb-0 fw-bold" id="statWins">@ViewBag.Wins</h3>
+                        <small class="text-white-50 text-uppercase" style="letter-spacing: 1px;">Wins</small>
+                    </div>
+                    <div>
+                        <h3 class="text-danger mb-0 fw-bold" id="statLosses">@ViewBag.Losses</h3>
+                        <small class="text-white-50 text-uppercase" style="letter-spacing: 1px;">Losses</small>
+                    </div>
+                    <div>
+                        <h3 class="text-warning mb-0 fw-bold" id="statDraws">@ViewBag.Draws</h3>
+                        <small class="text-white-50 text-uppercase" style="letter-spacing: 1px;">Draws</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.reload();
+    }, 15000); 
+</script>
