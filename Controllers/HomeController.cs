@@ -47,6 +47,14 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Lobby");
     }
 
+    [HttpGet]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete("PlayerId");
+        Response.Cookies.Delete("PlayerName");
+        return RedirectToAction("Index");
+    }
+
     public IActionResult Privacy()
     {
         return View();
